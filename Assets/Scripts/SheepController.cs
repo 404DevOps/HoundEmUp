@@ -7,89 +7,77 @@ public class SheepController : MonoBehaviour
     private GameObject playerObject;
     private GameManager gameManager;
     private Rigidbody sheepRigidBody;
-    public float range;
-    public float force;
+
+    private AudioSource squeeqAudio;
+    private Animator sheepAnimator;
+
+    public float speed;
     public bool isSafe;
+
+    Vector3 moveTo;
+    Vector3 startPos;
+    public float distance;
+
+    private bool moveSheep;
+    Vector3 lastPosition;
     // Start is called before the first frame update
     void Start()
     {
+        lastPosition = transform.position;
+        sheepAnimator = GetComponentInChildren<Animator>();
+        squeeqAudio = GetComponentInChildren<AudioSource>();
         playerObject = GameObject.Find("Player");
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         sheepRigidBody = GetComponent<Rigidbody>();
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (gameManager.isGameActive) 
+        
+    }
+
+    private void FixedUpdate()
+    {
+        
+        if (gameManager.isGameActive)
         {
-            if (IsPlayerNear())
-            {
-                //Player near and not safe
-                var awayFromPlayer = transform.position - playerObject.transform.position;
-                //var adjustedDirection = AdjustDirectionToBorder(awayFromPlayer);
-                if (isSafe)
+            isSafe = gameManager.IsPosInFence(gameObject.transform.position);
+            //transform.Translate(moveTo);
+            if (moveSheep) {
+                if (isPlayerInRange())
                 {
-                    sheepRigidBody.AddForce(awayFromPlayer * (force / 10));
+                    transform.Translate(Vector3.forward * Time.deltaTime * speed);
                 }
-                else
+                else 
                 {
-                    sheepRigidBody.AddForce(awayFromPlayer * force);
+                    moveSheep = false;
                 }
-                //transform.Translate(adjustedDirection * speed * Time.deltaTime);
-            }
-
-            if (gameManager.IsPosInFence(gameObject.transform.position))
-            {
-                isSafe = true;
-            }
-            else
-            {
-                isSafe = false;
             }
         }
-    }
-
-    Vector3 AdjustDirectionToBorder(Vector3 awayFromPlayer)
-    {
-        var border = playerObject.GetComponent<PlayerController>().border;
-
-        if (awayFromPlayer.x > 0 && transform.position.x >= border)
-            awayFromPlayer.x = -3f;
-        if (awayFromPlayer.x < 0 && transform.position.x <= -border)
-            awayFromPlayer.x = 3f;
-
-        if (awayFromPlayer.z > 0 && transform.position.z >= border)
-            awayFromPlayer.z = -3f;
-        if (awayFromPlayer.z < 0 && transform.position.z <= -border)
-            awayFromPlayer.z = 3f;
-
-        awayFromPlayer.y = 0;
-        return awayFromPlayer;
-
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        //if(other.CompareTag("Wall"))
-        //{
-        //    isSafe = true;
-        //}
-    }
-
-    bool IsPlayerNear()
-    {
-        var distance = Vector3.Distance(transform.position, playerObject.transform.position);
-        //Debug.Log("Player Distance: " + distance);
-        if (distance < range)
+        if (transform.position != lastPosition)
         {
-            Debug.Log("Player near.");
-            return true;
+            lastPosition = transform.position;
+            sheepAnimator.SetFloat("Speed_f", 1.5f);
         }
-        else
-        {
-            return false;
+        else {
+            sheepAnimator.SetFloat("Speed_f", 0f);
         }
+    }
+
+    bool isPlayerInRange()
+    {
+        return playerObject.GetComponent<PlayerController>().IsPosInRange(transform.position);
+    }
+    public void SetMovePosition()
+    {
+        var awayFromPlayer = transform.position - playerObject.transform.position;
+        transform.LookAt(transform.position + awayFromPlayer); 
+
+        //moveTo = gameObject.transform.position + awayFromPlayer;
+        //startPos = gameObject.transform.position;
+        moveSheep = true;
+        //squeeq sound
+        squeeqAudio.Play();
     }
 }

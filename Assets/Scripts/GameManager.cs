@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class GameManager : MonoBehaviour
 
     public GameObject endScreen;
     public GameObject startScreen;
+
+    public TextMeshProUGUI timerText;
+    int timer;
 
     public float centerXOffset;
 
@@ -43,10 +47,30 @@ public class GameManager : MonoBehaviour
     }
     public void StartGame()
     {
+        isGameActive = true;
+        timerText.gameObject.SetActive(true);
+        timer = 120;
+        StartCoroutine(countDown());
+
         startScreen.SetActive(false);
         SpawnFence(); 
-        SpawnSheep(totalSheep);
-        isGameActive = true;
+        SpawnSheep(totalSheep);  
+    }
+
+    IEnumerator countDown()
+    {
+        while (isGameActive)
+        {
+            timer--;
+            timerText.SetText("Time: " + timer);
+
+            if (timer == 0)
+            {
+                GameOver();
+            }
+
+            yield return new WaitForSeconds(1);
+        }
     }
 
     Vector3 RandomFencePosition()
