@@ -29,26 +29,29 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void FixedUpdate()
-    {
-        verticalInput = Input.GetAxis("Vertical");
-        horizontalInput = Input.GetAxis("Horizontal");
-        MovePlayer();
-        if (verticalInput != 0)
+    { 
+        if (gameManager.isGameActive)
         {
-            animator.SetFloat("Speed_f", 1.7f);
-        }
-        else
-        {
-            animator.SetFloat("Speed_f", 0);
-        }
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            animator.SetFloat("Speed_f", 2.5f);
-            speed = 5;
-        }
-        else 
-        {
-            speed = 3;
+            verticalInput = Input.GetAxis("Vertical");
+            horizontalInput = Input.GetAxis("Horizontal");
+            MovePlayer();
+            if (verticalInput != 0)
+            {
+                animator.SetFloat("Speed_f", 1.7f);
+            }
+            else
+            {
+                animator.SetFloat("Speed_f", 0);
+            }
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                animator.SetFloat("Speed_f", 2.5f);
+                speed = 5;
+            }
+            else
+            {
+                speed = 3;
+            }
         }
     }
 

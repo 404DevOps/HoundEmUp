@@ -24,10 +24,10 @@ public class Door : MonoBehaviour
             MoveDoor();
         }
 
-        if (!isOpen && AllSheepSafe())
-        {
-            gameManager.GameOver();
-        }
+        //if (!isOpen && AllSheepSafe())
+        //{
+        //    gameManager.GameOver();
+        //}
 
     }
 

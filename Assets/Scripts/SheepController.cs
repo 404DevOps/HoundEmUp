@@ -29,6 +29,8 @@ public class SheepController : MonoBehaviour
         playerObject = GameObject.Find("Player");
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         sheepRigidBody = GetComponent<Rigidbody>();
+
+        squeeqAudio.Play();
     }
 
     // Update is called once per frame
@@ -43,6 +45,13 @@ public class SheepController : MonoBehaviour
         if (gameManager.isGameActive)
         {
             isSafe = gameManager.IsPosInFence(gameObject.transform.position);
+
+            if (isSafe)
+            {
+                gameManager.UpdateScore(100);
+                gameManager.SpawnSheep();
+                gameObject.SetActive(false);
+            }
             //transform.Translate(moveTo);
             if (moveSheep) {
                 if (isPlayerInRange())
@@ -77,7 +86,7 @@ public class SheepController : MonoBehaviour
         //moveTo = gameObject.transform.position + awayFromPlayer;
         //startPos = gameObject.transform.position;
         moveSheep = true;
-        //squeeq sound
-        squeeqAudio.Play();
     }
+
+
 }

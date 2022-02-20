@@ -11,13 +11,15 @@ public class GameManager : MonoBehaviour
     public int totalSheep = 3;
     public GameObject sheepPrefab;
     public GameObject fencePrefab;
-    private GameObject fence;
+    public GameObject fence;
 
     public GameObject endScreen;
     public GameObject startScreen;
 
     public TextMeshProUGUI timerText;
+    public TextMeshProUGUI scoreText;
     int timer;
+    int score;
 
     public float centerXOffset;
 
@@ -33,6 +35,12 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+    }
+
+    public void UpdateScore(int Score)
+    {
+        score += Score;
+        scoreText.SetText("Score: " + score);
     }
 
     public void GameOver()
@@ -53,8 +61,8 @@ public class GameManager : MonoBehaviour
         StartCoroutine(countDown());
 
         startScreen.SetActive(false);
-        SpawnFence(); 
-        SpawnSheep(totalSheep);  
+       // SpawnFence();
+        SpawnSheep();
     }
 
     IEnumerator countDown()
@@ -73,15 +81,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    Vector3 RandomFencePosition()
-    {
-        //TODO, cant be InsideGutter
-        float randX = Random.Range(-5, 1);
-        float randZ = Random.Range(-4, 2.4f);
-
-        return new Vector3(randX, fencePrefab.transform.position.y, randZ);
-    }
-
     Vector3 RandomSpawnPosition()
     {
         //TODO, cant be InsideGutter
@@ -91,22 +90,19 @@ public class GameManager : MonoBehaviour
         return new Vector3(randX, 0, randZ);
     }
 
-    void SpawnFence()
+    //void SpawnFence()
+    //{
+    //    fence = Instantiate(fencePrefab, fencePrefab.transform.position, fencePrefab.transform.rotation);
+    //}
+    public void SpawnSheep()
     {
-        fence = Instantiate(fencePrefab, RandomFencePosition(), fencePrefab.transform.rotation);
-    }
-    void SpawnSheep(int amount)
-    {
-        for (int i = 0; i < amount; i++)
-		{
-            Vector3 validPos = RandomSpawnPosition(); ;
-            while (IsPosInFence(validPos))
-            {
-                validPos = RandomSpawnPosition();
-            }
+        Vector3 validPos = RandomSpawnPosition(); ;
+        while (IsPosInFence(validPos))
+        {
+            validPos = RandomSpawnPosition();
+        }
 
-            Instantiate(sheepPrefab, validPos, sheepPrefab.transform.rotation);
-	    }
+        Instantiate(sheepPrefab, validPos, sheepPrefab.transform.rotation);
     }
 
     public bool IsPosInFence(Vector3 pos)
@@ -124,7 +120,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    Vector3 GetParentCenter(GameObject obj) 
+    Vector3 GetParentCenter(GameObject obj)
     {
         Vector3 sumVector = new Vector3(0f, 0f, 0f);
 
