@@ -37,13 +37,20 @@ public class PlayerController : MonoBehaviour
             MovePlayer();
             if (verticalInput != 0)
             {
-                animator.SetFloat("Speed_f", 1.7f);
+                if (verticalInput > 0)
+                {
+                    animator.SetFloat("Speed_f", 1.7f);
+                }
+                else 
+                {
+                    animator.SetFloat("Speed_f", 1.3f);
+                }
             }
             else
             {
                 animator.SetFloat("Speed_f", 0);
             }
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.LeftShift) && verticalInput > 0)
             {
                 animator.SetFloat("Speed_f", 2.5f);
                 speed = 5;
@@ -83,7 +90,9 @@ public class PlayerController : MonoBehaviour
     {
         if (gameManager.isGameActive)
         {
-            gameObject.transform.Translate(Vector3.forward * verticalInput * speed * Time.deltaTime, Space.Self);
+            var moveSpeed = verticalInput > 0 ? speed : speed/2;
+
+            gameObject.transform.Translate(Vector3.forward * verticalInput * moveSpeed * Time.deltaTime, Space.Self);
             gameObject.transform.Rotate(Vector3.up * horizontalInput * turnSpeed * Time.deltaTime);
         }
     }

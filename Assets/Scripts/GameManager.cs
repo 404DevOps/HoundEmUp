@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public float spawnRange = 4.5f;
     public float fenceRange = 3.0f;
-    public int totalSheep = 3;
     public GameObject sheepPrefab;
     public GameObject fencePrefab;
     public GameObject fence;
@@ -18,16 +18,24 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI scoreText;
+    public InputField playerNameField;
     int timer;
-    int score;
+    public int GameTime = 5;
 
     public float centerXOffset;
 
     public bool isGameActive;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        if (!string.IsNullOrEmpty(ScoreManager.Instance.PlayerName))
+        {
+            Debug.Log("PlayerName saved.");
+            playerNameField.SetTextWithoutNotify(ScoreManager.Instance.PlayerName);
+
+            ScoreManager.Instance.LoadScore();
+        }
         isGameActive = false;
 
     }
@@ -39,12 +47,13 @@ public class GameManager : MonoBehaviour
 
     public void UpdateScore(int Score)
     {
-        score += Score;
-        scoreText.SetText("Score: " + score);
+        ScoreManager.Instance.Score += Score;
+        scoreText.SetText("Score: " + ScoreManager.Instance.Score);
     }
 
     public void GameOver()
     {
+        ScoreManager.Instance.SaveScore();
         isGameActive = false;
         endScreen.SetActive(true);
     }
@@ -55,14 +64,18 @@ public class GameManager : MonoBehaviour
     }
     public void StartGame()
     {
-        isGameActive = true;
-        timerText.gameObject.SetActive(true);
-        timer = 120;
-        StartCoroutine(countDown());
+        if (!string.IsNullOrEmpty(playerNameField.text))
+        {
+            ScoreManager.Instance.PlayerName = playerNameField.text;
+            isGameActive = true;
+            timerText.gameObject.SetActive(true);
+            timer = GameTime;
+            StartCoroutine(countDown());
 
-        startScreen.SetActive(false);
-       // SpawnFence();
-        SpawnSheep();
+            startScreen.SetActive(false);
+            // SpawnFence();
+            SpawnSheep();
+        }
     }
 
     IEnumerator countDown()
