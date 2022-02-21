@@ -361,14 +361,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 292033009}
-  m_LocalRotation: {x: 0.27899113, y: 0, z: 0, w: 0.9602937}
-  m_LocalPosition: {x: 0, y: 1.34, z: -1.8}
+  m_LocalRotation: {x: 0.21873938, y: 0, z: 0, w: 0.97578335}
+  m_LocalPosition: {x: 0, y: 1.7, z: -2.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 535129930}
   m_Father: {fileID: 1505088958}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 32.4, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 25.27, y: 0, z: 0}
 --- !u!81 &292033011
 AudioListener:
   m_ObjectHideFlags: 0
@@ -573,7 +573,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 7ef22d598d5cc6e4285a121616a6a8c5, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.015
+  m_Volume: 0.348
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1769,7 +1769,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Chick Magnet
+  m_text: Hound Em Up
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2074,7 +2074,7 @@ Transform:
   m_GameObject: {fileID: 1505088954}
   m_LocalRotation: {x: 0, y: 0.7071068, z: -0, w: -0.7071068}
   m_LocalPosition: {x: 4.02, y: 0, z: -0.72}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_Children:
   - {fileID: 14107487}
   - {fileID: 292033010}
